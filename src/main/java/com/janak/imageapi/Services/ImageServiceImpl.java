@@ -1,5 +1,6 @@
 package com.janak.imageapi.Services;
 
+import com.janak.imageapi.Exception.FileRequiredException;
 import com.janak.imageapi.Exception.FileTypeNotSupportedException;
 import com.janak.imageapi.Exception.ImageNotFoundException;
 import com.janak.imageapi.Repository.ImageRepository;
@@ -37,6 +38,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Image saveImage(MultipartFile image) {
+        if (image == null || image.isEmpty()) {
+           throw new FileRequiredException();
+        }
         validateImageFile(image);
         String extension = Objects.requireNonNull(image.getOriginalFilename()).substring(image.getOriginalFilename().lastIndexOf("."));
         String newImageName = System.currentTimeMillis() + "_" + UUID.randomUUID()+extension;
@@ -84,6 +88,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Image updateImage(long id, MultipartFile image) {
+        if (image == null || image.isEmpty()) {
+            throw new FileRequiredException();
+        }
         Optional<Image> existingImageOpt = imageRepository.findById(id);
         if (existingImageOpt.isEmpty()) {
             throw new ImageNotFoundException();
