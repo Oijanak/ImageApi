@@ -27,13 +27,14 @@ import java.util.*;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    @Value("${file.upload-dir}")
-    private String uploadPath;
+
+    private final String uploadPath;
 
     private final ImageRepository imageRepository;
 
-    public ImageServiceImpl(ImageRepository imageRepository) {
+    public ImageServiceImpl(ImageRepository imageRepository,@Value("${file.upload-dir}")String uploadPath) {
         this.imageRepository = imageRepository;
+        this.uploadPath = uploadPath;
     }
 
     @Override
